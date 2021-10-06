@@ -117,8 +117,8 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
-int             wait(void);
-void            wakeup(void*);
+int             wait(int*); //Lab 1 Modified
+void            wakeup(void*); 
 void            yield(void);
 
 // swtch.S
