@@ -75,6 +75,7 @@ allocproc(void)
 {
   struct proc *p;
   char *sp;
+  
 
   acquire(&ptable.lock);
 
@@ -88,6 +89,8 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  //Lab 1 Modified
+  p->status = 0;
 
   release(&ptable.lock);
 
@@ -225,9 +228,10 @@ fork(void)
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
 void
-exit(void)
+exit(int status)
 {
   struct proc *curproc = myproc();
+
   struct proc *p;
   int fd;
 
