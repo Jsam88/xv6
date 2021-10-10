@@ -536,3 +536,7 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+//LAB1 MODIFIED
+void
+lab1test(){}
