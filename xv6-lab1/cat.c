@@ -28,7 +28,7 @@ main(int argc, char *argv[])
 
   if(argc <= 1){
     cat(0);
-    exit(1);  //LAB 1 EDIT
+    exit(0);  //LAB 1 EDIT
   }
 
   for(i = 1; i < argc; i++){

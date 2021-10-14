@@ -43,13 +43,13 @@ main(int argc, char *argv[])
 
   if(argc <= 1){
     printf(2, "usage: grep pattern [file ...]\n");
-    exit(1); //LAB 1 EDIT
+    exit(2); //LAB 1 EDIT
   }
   pattern = argv[1];
 
   if(argc <= 2){
     grep(pattern, 0);
-    exit(1);  //LAB 1 EDIT
+    exit(0);  //LAB 1 EDIT
   }
 
   for(i = 2; i < argc; i++){

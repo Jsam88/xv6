@@ -21,24 +21,24 @@ iputtest(void)
 
   if(mkdir("iputdir") < 0){
     printf(stdout, "mkdir failed\n");
-    exit(stdout); //LAB 1 MODIFIED  //LAB 1 MODIFIED
+    exit(stdout); //LAB 1 MODIFIED
   }
   if(chdir("iputdir") < 0){
     printf(stdout, "chdir iputdir failed\n");
-    exit(stdout); //LAB 1 MODIFIED  //LAB 1 MODIFIED
+    exit(stdout); //LAB 1 MODIFIED
   }
   if(unlink("../iputdir") < 0){
     printf(stdout, "unlink ../iputdir failed\n");
-    exit(stdout); //LAB 1 MODIFIED   //LAB 1 MODIFIED
+    exit(stdout); //LAB 1 MODIFIED
   }
   if(chdir("/") < 0){
     printf(stdout, "chdir / failed\n");
-    exit(stdout); //LAB 1 MODIFIED  //LAB 1 MODIFIED
+    exit(stdout); //LAB 1 MODIFIED
   }
   printf(stdout, "iput test ok\n");
 }
 
-// does exit(0) call iput(p->cwd) in a transaction?
+// does exit() call iput(p->cwd) in a transaction?
 void
 exitiputtest(void)
 {
@@ -66,7 +66,7 @@ exitiputtest(void)
     }
     exit(0); //LAB 1 MODIFIED
   }
-  wait(0); //LAB 1 Modified
+  wait(0); //LAB 1 MODIFIED
   printf(stdout, "exitiput test ok\n");
 }
 
@@ -102,14 +102,14 @@ openiputtest(void)
       printf(stdout, "open directory for write succeeded\n");
       exit(stdout); //LAB 1 MODIFIED
     }
-    exit(0); //LAB 1 MODIFIED
+    exit(stdout); //LAB 1 MODIFIED
   }
   sleep(1);
   if(unlink("oidir") != 0){
     printf(stdout, "unlink failed\n");
     exit(stdout); //LAB 1 MODIFIED
   }
-  wait(0); //LAB 1 Modified
+  wait(0); //LAB 1 MODIFIED
   printf(stdout, "openiput test ok\n");
 }
 
@@ -310,7 +310,7 @@ pipe1(void)
 
   if(pipe(fds) != 0){
     printf(1, "pipe() failed\n");
-    exit(1);  //LAB 1 MODIFIED
+    exit(1); //LAB 1 MODIFIED
   }
   pid = fork();
   seq = 0;
@@ -346,7 +346,7 @@ pipe1(void)
       exit(1); //LAB 1 MODIFIED
     }
     close(fds[0]);
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   } else {
     printf(1, "fork() failed\n");
     exit(1); //LAB 1 MODIFIED
@@ -394,9 +394,9 @@ preempt(void)
   kill(pid2);
   kill(pid3);
   printf(1, "wait... ");
-  wait(0); //LAB 1 Modified
-  wait(0); //LAB 1 Modified
-  wait(0); //LAB 1 Modified
+  wait(0); //LAB 1 MODIFIED
+  wait(0); //LAB 1 MODIFIED
+  wait(0); //LAB 1 MODIFIED
   printf(1, "preempt ok\n");
 }
 
@@ -413,7 +413,7 @@ exitwait(void)
       return;
     }
     if(pid){
-      if(wait(0) != pid){ //LAB 1 Modified
+      if(wait(0) != pid){ //LAB 1 MODIFIED
         printf(1, "wait wrong pid\n");
         return;
       }
@@ -453,7 +453,7 @@ mem(void)
     printf(1, "mem ok\n");
     exit(1); //LAB 1 MODIFIED
   } else {
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   }
 }
 
@@ -486,7 +486,7 @@ sharedfd(void)
   if(pid == 0)
     exit(0); //LAB 1 MODIFIED
   else
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   close(fd);
   fd = open("sharedfd", 0);
   if(fd < 0){
@@ -552,7 +552,7 @@ fourfiles(void)
   }
 
   for(pi = 0; pi < 4; pi++){
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   }
 
   for(i = 0; i < 2; i++){
@@ -620,7 +620,7 @@ createdelete(void)
   }
 
   for(pi = 0; pi < 4; pi++){
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   }
 
   name[0] = name[1] = name[2] = 0;
@@ -631,7 +631,7 @@ createdelete(void)
       fd = open(name, 0);
       if((i == 0 || i >= N/2) && fd < 0){
         printf(1, "oops createdelete %s didn't exist\n", name);
-        exit(0); //LAB 1 MODIFIED
+        exit(1); //LAB 1 MODIFIED
       } else if((i >= 1 && i < N/2) && fd >= 0){
         printf(1, "oops createdelete %s did exist\n", name);
         exit(1); //LAB 1 MODIFIED
@@ -794,7 +794,7 @@ concreate(void)
     if(pid == 0)
       exit(0); //LAB 1 MODIFIED
     else
-      wait(0); //LAB 1 Modified
+      wait(0); //LAB 1 MODIFIED
   }
 
   memset(fa, 0, sizeof(fa));
@@ -846,7 +846,7 @@ concreate(void)
     if(pid == 0)
       exit(0); //LAB 1 MODIFIED
     else
-      wait(0); //LAB 1 Modified
+      wait(0); //LAB 1 MODIFIED
   }
 
   printf(1, "concreate ok\n");
@@ -881,8 +881,8 @@ linkunlink()
   }
 
   if(pid)
-    wait(0); //LAB 1 Modified
-  else 
+    wait(0); //LAB 1 MODIFIED
+  else
     exit(0); //LAB 1 MODIFIED
 
   printf(1, "linkunlink ok\n");
@@ -1275,7 +1275,7 @@ rmdot(void)
   }
   if(unlink("dots") != 0){
     printf(1, "unlink dots failed!\n");
-    exit(0); //LAB 1 MODIFIED
+    exit(1); //LAB 1 MODIFIED
   }
   printf(1, "rmdot ok\n");
 }
@@ -1397,13 +1397,13 @@ forktest(void)
   }
 
   for(; n > 0; n--){
-    if(wait(0) < 0){ //LAB 1 Modified
+    if(wait(0) < 0){ //LAB 1 MODIFIED
       printf(1, "wait stopped early\n");
       exit(1); //LAB 1 MODIFIED
     }
   }
 
-  if(wait(0) != -1){ //LAB 1 Modified
+  if(wait(0) != -1){ //LAB 1 MODIFIED
     printf(1, "wait got too many\n");
     exit(1); //LAB 1 MODIFIED
   }
@@ -1446,7 +1446,7 @@ sbrktest(void)
   }
   if(pid == 0)
     exit(0); //LAB 1 MODIFIED
-  wait(0); //LAB 1 Modified
+  wait(0); //LAB 1 MODIFIED
 
   // can one grow address space to something big?
 #define BIG (100*1024*1024)
@@ -1506,7 +1506,7 @@ sbrktest(void)
       kill(ppid);
       exit(stdout); //LAB 1 MODIFIED
     }
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   }
 
   // if we run the system out of memory, does it clean up the last
@@ -1533,7 +1533,7 @@ sbrktest(void)
     if(pids[i] == -1)
       continue;
     kill(pids[i]);
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
   }
   if(c == (char*)0xffffffff){
     printf(stdout, "failed sbrk leaked memory\n");
@@ -1577,7 +1577,7 @@ validatetest(void)
     sleep(0);
     sleep(0);
     kill(pid);
-    wait(0); //LAB 1 Modified
+    wait(0); //LAB 1 MODIFIED
 
     // try to crash the kernel by passing in a bad string pointer
     if(link("nosuchfile", (char*)p) != -1){
@@ -1632,7 +1632,7 @@ bigargtest(void)
     printf(stdout, "bigargtest: fork failed\n");
     exit(stdout); //LAB 1 MODIFIED
   }
-  wait(0); //LAB 1 Modified
+  wait(0); //LAB 1 MODIFIED
   fd = open("bigarg-ok", 0);
   if(fd < 0){
     printf(stdout, "bigarg test failed!\n");
@@ -1720,7 +1720,7 @@ uio()
     printf (1, "fork failed\n");
     exit(1); //LAB 1 MODIFIED
   }
-  wait(0); //LAB 1 Modified
+  wait(0);  //LAB 1 MODIFIED
   printf(1, "uio test done\n");
 }
 
