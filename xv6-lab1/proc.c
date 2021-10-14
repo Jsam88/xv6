@@ -89,8 +89,9 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+
   //Lab 1 Modified
-  p->status = 0;
+  // p->estatus = 0;
 
   release(&ptable.lock);
 
@@ -228,12 +229,14 @@ fork(void)
 // An exited process remains in the zombie state
 // until its parent calls wait(0) to find out it exited.
 void
-exit(int status)
+exit(int status)  //LAB 1 MODIFIED
 {
   struct proc *curproc = myproc();
 
   struct proc *p;
   int fd;
+
+   curproc->estatus = status; //LAB 1 MODIFIED
 
   if(curproc == initproc)
     panic("init exiting");
@@ -289,7 +292,13 @@ wait(int* status) //Lab 1 Modified
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
+
         // Found one.
+
+        if (status){          //LAB 1 MODIFIED
+          *status = p->estatus;  //Get the status if it is a zombie process
+        }
+        
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
@@ -306,6 +315,53 @@ wait(int* status) //Lab 1 Modified
 
     // No point waiting if we don't have any children.
     if(!havekids || curproc->killed){
+      release(&ptable.lock);
+      return -1;
+    }
+
+    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
+    sleep(curproc, &ptable.lock);  //DOC: wait-sleep
+  }
+}
+
+int
+waitpid(int param_pid, int *status, int options){ //LAB 1 MODIFIED
+  struct proc *p;
+  int exists;
+  int pid;
+  struct proc *curproc = myproc();
+  
+  acquire(&ptable.lock);
+  for(;;){
+    // Scan through table looking for exited children.
+    exists = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p -> pid != param_pid)
+        continue;
+      exists = 1;
+      if(p->state == ZOMBIE){
+        // Found one.
+
+        if (status){          //LAB 1 MODIFIED
+          *status = p->estatus;  //Get the status if it is a zombie process
+        }
+
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        p->state = UNUSED;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // No point waiting if we don't have any children.
+    if(!exists || curproc->killed){
       release(&ptable.lock);
       return -1;
     }

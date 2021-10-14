@@ -29,4 +29,5 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
-SYSCALL(lab1test)  //LAB1 MODIFIED
+SYSCALL(lab1test)   //LAB 1 MODIFIED
+SYSCALL(waitpid)    //LAB 1 MODIFIED
