@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 	
 	int exitWait(void);
 	int waitPid(void);
-	// int CELEBW02(void);
+	int CELEBW02(void);
 
   printf(1, "\n This program tests the correctness of your lab#1\n");
   
@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 	exitWait();
   else if (atoi(argv[1]) == 2)
 	waitPid();
-  // else if (atoi(argv[1]) == 3)
-	// CELEBW02();
+  else if (atoi(argv[1]) == 3)
+	CELEBW02();
   else 
    printf(1, "\ntype \"lab1 1\" to test exit and wait, \"lab1 2\" to test waitpid and \"lab1 3\" to test the extra credit WNOHANG option \n");
   
@@ -100,31 +100,31 @@ int waitPid(void){
       return 0;
   }
 
-// int CELEBW02(void){
+int CELEBW02(void){
 	
-//  printf(1, "\n  Part e) the waitpid option WNOHANG, test program CELEBW02 \n");
+ printf(1, "\n  Part e) the waitpid option WNOHANG, test program CELEBW02 \n");
 
-//   int pid, retpid;
-//   int status;
+  int pid, retpid;
+  int status;
 
-//   if ((pid = fork()) < 0)
-//     printf(2, "fork() error");
-//   else if (pid == 0) {
-//     sleep(5);
-//     exit(1);
-//   }
-//   else do {
-//     if ((retpid = waitpid(pid, &status, WNOHANG)) == -1)
-//       printf(2, "wait() error");
-//     else if (retpid == 0) {
-//       printf(1, "child is still running \n");
-//       sleep(1);
-//     }
-//     else {
-//         printf(1, "child exited with status of %d\n", status);
-//     }
-//   } while (retpid == 0);
+  if ((pid = fork()) < 0)
+    printf(2, "fork() error");
+  else if (pid == 0) {
+    sleep(5);
+    exit(1);
+  }
+  else do {
+    if ((retpid = waitpid(pid, &status, WNOHANG)) == -1)
+      printf(2, "wait() error");
+    else if (retpid == 0) {
+      printf(1, "child is still running \n");
+      sleep(1);
+    }
+    else {
+        printf(1, "child exited with status of %d\n", status);
+    }
+  } while (retpid == 0);
   
-//   return 0;
+  return 0;
   
-//   }
+  }
