@@ -90,8 +90,13 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->priority = 15;
-  //Lab 1 Modified
+
+  //LAB 1 MODIFIED
   // p->estatus = 0;
+
+  //LAB 2 MODIFIED
+  p -> priority = 15;
+
 
   release(&ptable.lock);
 
@@ -212,7 +217,7 @@ fork(void)
       np->ofile[i] = filedup(curproc->ofile[i]);
   np->cwd = idup(curproc->cwd);
 
-  np->priority = curproc->priority; //LAB2 MODIFIED
+  np->priority = curproc->priority; //LAB 2 MODIFIED
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
@@ -374,7 +379,7 @@ waitpid(int param_pid, int *status, int options){ //LAB 1 MODIFIED
 }
 /* LAB 2 MODIFIED START */
 void
-changepriority(int priority) //Lab2
+changepriority(int priority) //LAB 2 MODIFIED
 {
   struct proc *curproc = myproc();
   if (priority > 31) {
@@ -389,13 +394,12 @@ changepriority(int priority) //Lab2
 }
 
 int
-getpriority() //Lab2
+getpriority() //LAB 2 MODIFIED
 {
   struct proc *curproc = myproc();
   return curproc->priority;
 }
 
-/* LAB 2 MODIFIED END */
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
@@ -405,13 +409,19 @@ getpriority() //Lab2
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
+
+#define NULL (void*)0 
+
 void
-scheduler(void)
+scheduler(void) 
 {
   struct proc *p;
+  struct proc *p2;
   struct cpu *c = mycpu();
+  struct proc *minpriority = NULL;
+
   c->proc = 0;
-  
+
   for(;;){
     // Enable interrupts on this processor.
     sti();
@@ -422,9 +432,23 @@ scheduler(void)
       if(p->state != RUNNABLE)
         continue;
 
+      minpriority = p;
+      
+      for(p2 = ptable.proc; p2 < &ptable.proc[NPROC]; p2++){
+        if(p2->state != RUNNABLE)
+          continue;
+
+        if (p2 -> priority < minpriority -> priority) {
+          minpriority = p2;
+        }
+      }
+
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
+
+      p = minpriority;
+
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
@@ -436,10 +460,13 @@ scheduler(void)
       // It should have changed its p->state before coming back.
       c->proc = 0;
     }
+
     release(&ptable.lock);
 
   }
 }
+/* LAB 2 MODIFIED END */
+
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
