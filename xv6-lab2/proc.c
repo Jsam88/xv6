@@ -89,7 +89,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p->priority = 15;
   //Lab 1 Modified
   // p->estatus = 0;
 
@@ -211,6 +211,8 @@ fork(void)
     if(curproc->ofile[i])
       np->ofile[i] = filedup(curproc->ofile[i]);
   np->cwd = idup(curproc->cwd);
+
+  np->priority = curproc->priority; //LAB2 MODIFIED
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
@@ -370,6 +372,30 @@ waitpid(int param_pid, int *status, int options){ //LAB 1 MODIFIED
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+/* LAB 2 MODIFIED START */
+void
+changepriority(int priority) //Lab2
+{
+  struct proc *curproc = myproc();
+  if (priority > 31) {
+    curproc -> priority = 31;
+  }
+  else if (priority < 0) {
+    curproc -> priority = 0;
+  }
+  else {
+    curproc -> priority = priority;
+  }
+}
+
+int
+getpriority() //Lab2
+{
+  struct proc *curproc = myproc();
+  return curproc->priority;
+}
+
+/* LAB 2 MODIFIED END */
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.

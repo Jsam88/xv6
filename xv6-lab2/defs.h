@@ -121,7 +121,8 @@ int             wait(int*);                 //LAB 1 Modified
 int             waitpid(int, int*, int);    //LAB 1 MODIFIED
 void            wakeup(void*); 
 void            yield(void);
-void            lab1test(void);             //LAB 1 Modified
+void            changepriority(int); //Lab2
+int             getpriority(void); //Lab2
 
 // swtch.S
 void            swtch(struct context**, struct context*);
