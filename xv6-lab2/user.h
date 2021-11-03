@@ -25,6 +25,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 void lab1test(void);   //LAB 1 MODIFIED
+int setpriority(int); //LAB 2 MODIFIED
 
 // ulib.c
 int stat(const char*, struct stat*);

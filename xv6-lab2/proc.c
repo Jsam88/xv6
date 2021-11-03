@@ -95,7 +95,7 @@ found:
   // p->estatus = 0;
 
   //LAB 2 MODIFIED
-  p -> priority = 15;
+  p -> priority = 10;
 
 
   release(&ptable.lock);
@@ -379,7 +379,7 @@ waitpid(int param_pid, int *status, int options){ //LAB 1 MODIFIED
 }
 /* LAB 2 MODIFIED START */
 void
-changepriority(int priority) //LAB 2 MODIFIED
+setpriority(int priority) //LAB 2 MODIFIED
 {
   struct proc *curproc = myproc();
   if (priority > 31) {

@@ -113,9 +113,17 @@ sys_uptime(void)
 }
 
 //LAB1 MODIFIED
-int
-sys_lab1test(void)
+// int
+// sys_lab1test(void)
+// {
+//   lab1test();
+//   return 0;
+// }
+
+void
+sys_setpriority(void) //Lab2
 {
-lab1test();
-return 0;
+  int priority;
+  argint(0, &priority);
+  return setpriority(priority);
 }

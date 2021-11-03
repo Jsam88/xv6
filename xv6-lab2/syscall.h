@@ -20,5 +20,6 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-#define SYS_lab1test  22   //LAB 1 MODIFIED
-#define SYS_waitpid 23 //LAB 1 MODIFIED
+//#define SYS_lab1test  22   //LAB 1 MODIFIED
+#define SYS_waitpid 22 //LAB 1 MODIFIED
+#define SYS_setpriority 23 //LAB 2 MODIFIED
