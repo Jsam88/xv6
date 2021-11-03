@@ -111,11 +111,25 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-//LAB1 MODIFIED
-int
-sys_lab1test(void)
+/* LAB 2 MODIFIED START */
+void
+sys_changepriority(void) //LAB 2 MODIFIED
 {
-lab1test();
-return 0;
+  int priority;
+  argint(0, &priority);
+  return changepriority(priority);
 }
+
+int 
+sys_getpriority(void) //LAB 2 MODIFIED
+{
+  return getpriority();
+}
+
+void
+sys_yield(void) //LAB 2 MODIFIED
+{
+  return yield();
+}
+
+/* LAB 2 MODIFIED END */

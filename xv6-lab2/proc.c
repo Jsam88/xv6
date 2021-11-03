@@ -95,7 +95,7 @@ found:
   // p->estatus = 0;
 
   //LAB 2 MODIFIED
-  p -> priority = 15;
+  p -> priority = 10;
 
 
   release(&ptable.lock);
