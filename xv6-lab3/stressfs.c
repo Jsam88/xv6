@@ -43,7 +43,7 @@ main(int argc, char *argv[])
     read(fd, data, sizeof(data));
   close(fd);
 
-  wait();
+  wait(0);   //LAB 1 MODIFIED
 
-  exit();
+  exit(0);  //LAB 1 MODIFIED
 }

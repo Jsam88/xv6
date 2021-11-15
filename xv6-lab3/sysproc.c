@@ -16,15 +16,37 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
+  int status;
+  argint(0, &status);
+  exit(status);  //LAB 1 MODIFIED
   return 0;  // not reached
 }
 
 int
 sys_wait(void)
 {
-  return wait();
+  int *status;
+
+  if (argptr(0, (void *)&status, sizeof(*status)) < 0){ //Use this if statement to check if the status is valid
+    return -1;                                          //Make sure its one of these seven states:
+  }                                                     //UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE
+
+  return wait(status);
 }
+
+int
+sys_waitpid(void) //LAB 1 MODIFIED
+{ 
+  int pid;
+  argint(0, &pid);
+  int *status;
+  
+  if (argptr(1, (void*)&status, sizeof(*status)) < 0) {     //Check status again to make sure its not out of bounds
+    return -1;
+  }
+
+  return waitpid(pid, status, 0); 
+} 
 
 int
 sys_kill(void)
@@ -89,3 +111,25 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+/* LAB 2 MODIFIED START */
+void
+sys_changepriority(void) //LAB 2 MODIFIED
+{
+  int priority;
+  argint(0, &priority);
+  return changepriority(priority);
+}
+
+int 
+sys_getpriority(void) //LAB 2 MODIFIED
+{
+  return getpriority();
+}
+
+void
+sys_yield(void) //LAB 2 MODIFIED
+{
+  return yield();
+}
+
+/* LAB 2 MODIFIED END */
