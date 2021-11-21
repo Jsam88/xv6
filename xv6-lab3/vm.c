@@ -339,8 +339,8 @@ copyuvm(pde_t *pgdir, uint sz, uint stacksz)
     }
   }
 
-  //LAB 3 MODIFIED
-  for(i = PGROUNDUP(TOP - (stacksz * PGSIZE)); i < KERNBASE; i += PGSIZE){
+  //LAB 3 MODIFIED START
+  for(i = PGROUNDUP(TOP - (stacksz * PGSIZE)); i < TOP; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist again");
     if(!(*pte & PTE_P))

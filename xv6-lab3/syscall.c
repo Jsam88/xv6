@@ -19,7 +19,7 @@ fetchint(uint addr, int *ip)
 {
   //struct proc *curproc = myproc();  //LAB 3 MODIFIED
 
-  if(addr >= TOP || addr+4 > TOP) //LAB 3 MODIFIED
+  if(addr >= TOP || addr+4 > TOP)     //LAB 3 MODIFIED
     return -1;
   *ip = *(int*)(addr);
   return 0;
@@ -34,10 +34,10 @@ fetchstr(uint addr, char **pp)
   char *s, *ep;
   //struct proc *curproc = myproc();  //LAB 3 MODIFIED
 
-  if(addr >= TOP) //LAB 3 MODIFIED
+  if(addr >= TOP)     //LAB 3 MODIFIED
     return -1;
   *pp = (char*)addr;
-  ep = (char*)TOP; //LAB 3 MODIFIED
+  ep = (char*)TOP;    //LAB 3 MODIFIED
   for(s = *pp; s < ep; s++){
     if(*s == 0)
       return s - *pp;
@@ -59,7 +59,7 @@ int
 argptr(int n, char **pp, int size)
 {
   int i;
-  //struct proc *curproc = myproc();  //LAB 3 MODIFIED
+  //struct proc *curproc = myproc();                    //LAB 3 MODIFIED
  
   if(argint(n, &i) < 0)
     return -1;
