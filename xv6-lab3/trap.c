@@ -81,21 +81,29 @@ trap(struct trapframe *tf)
     break;
 
   //LAB 3 MODIFIED
-  case T_PGFLT:
-    curproc = myproc();
-    fault = rcr2();
-    if(fault > TOP){
-      exit(0);
-    }
-    if(allocuvm(curproc->pgdir, PGROUNDDOWN(fault), fault) == 0){
-        cprintf("Page fault, allocuvm fail, current number of pages: %d\n", curproc->stacksz);
-        exit(0);
-    }
-    else{
-      curproc->stacksz += 1;
-      cprintf("Page fault, number of pages: %d, new page at: 0x%x\n", curproc->stacksz, fault);
-    }
-    break;
+  // case T_PGFLT:
+  //   curproc = myproc();
+  //   fault = rcr2();
+  //   if(fault > TOP){
+  //     exit(0);
+  //   }
+  //   if(allocuvm(curproc->pgdir, PGROUNDDOWN(fault), fault) == 0){
+  //       cprintf("Page fault, allocuvm fail, current number of pages: %d\n", curproc->stacksz);
+  //       exit(0);
+  //   }
+  //   else{
+  //     curproc->stacksz += 1;
+  //     cprintf("Page fault, number of pages: %d, new page at: 0x%x\n", curproc->stacksz, fault);
+  //   }
+  //   break;
+    case T_PGFLT:
+      curproc = myproc();
+      cprintf("Page fault\n");
+      if (rcr2() <= TOP - (curproc->stacksz * PGSIZE)) {
+        allocuvm(curproc -> pgdir, PGROUNDDOWN(rcr2()), rcr2());
+        curproc -> stacksz++;
+      }
+      break;
 
   //PAGEBREAK: 13
   default:
