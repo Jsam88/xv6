@@ -51,6 +51,7 @@ struct proc {
   char name[16];               // Process name (debugging)
   int estatus;                 // Stores status at EXIT   LAB1
   int priority;                // Stores Process Priority LAB2
+  uint stacksz;                // Stores size of stack LAB3
 };
 
 // Process memory is laid out contiguously, low addresses first:
