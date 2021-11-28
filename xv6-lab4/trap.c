@@ -13,8 +13,6 @@ struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
-struct proc *curproc;
-uint fault;
 
 void
 tvinit(void)
@@ -40,11 +38,11 @@ trap(struct trapframe *tf)
 {
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
-      exit(0);  //LAB 1 MODIFIED
+      exit();
     myproc()->tf = tf;
     syscall();
     if(myproc()->killed)
-      exit(0);  //LAB 1 MODIFIED
+      exit();
     return;
   }
 
@@ -80,23 +78,6 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
-  //LAB 3 MODIFIED
-  case T_PGFLT:
-    curproc = myproc();
-    fault = rcr2();
-    if(fault > TOP){
-      exit(0);
-    }
-    if(allocuvm(curproc->pgdir, PGROUNDDOWN(fault), fault) == 0){
-        cprintf("Page fault, allocuvm fail, current number of pages: %d\n", curproc->stacksz);
-        exit(0);
-    }
-    else{
-      curproc->stacksz += 1;
-      cprintf("Page fault, number of pages: %d, new page at: 0x%x\n", curproc->stacksz, fault);
-    }
-    break;
-
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
@@ -117,7 +98,7 @@ trap(struct trapframe *tf)
   // (If it is still executing in the kernel, let it keep running
   // until it gets to the regular system call return.)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
-    exit(0);  //LAB 1 MODIFIED
+    exit();
 
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
@@ -127,5 +108,5 @@ trap(struct trapframe *tf)
 
   // Check if the process has been killed since we yielded
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
-    exit(0);  //LAB 1 MODIFIED
+    exit();
 }

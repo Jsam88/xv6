@@ -29,6 +29,5 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
-SYSCALL(waitpid)    //LAB 1 MODIFIED
-SYSCALL(changepriority) //LAB 2 MODIFIED
-SYSCALL(getpriority)    //LAB 2 MODIFIED
+SYSCALL(shm_open)
+SYSCALL(shm_close)	

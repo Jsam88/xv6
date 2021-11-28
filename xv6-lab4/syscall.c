@@ -17,9 +17,9 @@
 int
 fetchint(uint addr, int *ip)
 {
-  //struct proc *curproc = myproc();  //LAB 3 MODIFIED
+  struct proc *curproc = myproc();
 
-  if(addr >= TOP || addr+4 > TOP)     //LAB 3 MODIFIED
+  if(addr >= curproc->sz || addr+4 > curproc->sz)
     return -1;
   *ip = *(int*)(addr);
   return 0;
@@ -32,12 +32,12 @@ int
 fetchstr(uint addr, char **pp)
 {
   char *s, *ep;
-  //struct proc *curproc = myproc();  //LAB 3 MODIFIED
+  struct proc *curproc = myproc();
 
-  if(addr >= TOP)     //LAB 3 MODIFIED
+  if(addr >= curproc->sz)
     return -1;
   *pp = (char*)addr;
-  ep = (char*)TOP;    //LAB 3 MODIFIED
+  ep = (char*)curproc->sz;
   for(s = *pp; s < ep; s++){
     if(*s == 0)
       return s - *pp;
@@ -59,11 +59,11 @@ int
 argptr(int n, char **pp, int size)
 {
   int i;
-  //struct proc *curproc = myproc();                    //LAB 3 MODIFIED
+  struct proc *curproc = myproc();
  
   if(argint(n, &i) < 0)
     return -1;
-  if(size < 0 || (uint)i >= TOP || (uint)i+size > TOP)  //LAB 3 MODIFIED
+  if(size < 0 || (uint)i >= curproc->sz || (uint)i+size > curproc->sz)
     return -1;
   *pp = (char*)i;
   return 0;
@@ -101,19 +101,16 @@ extern int sys_sbrk(void);
 extern int sys_sleep(void);
 extern int sys_unlink(void);
 extern int sys_wait(void);
-extern int sys_waitpid(void); //LAB 1 MODIFIED
 extern int sys_write(void);
 extern int sys_uptime(void);
-extern int sys_changepriority(void); //LAB 2 MODIFIED
-extern int sys_getpriority(void); //LAB 2 MODIFIED
-extern int sys_yield(void); //LAB 2 MODIFIED
 
+extern int sys_shm_open(void);
+extern int sys_shm_close(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
 [SYS_wait]    sys_wait,
-[SYS_waitpid] sys_waitpid,    //LAB 1 MODIFIED
 [SYS_pipe]    sys_pipe,
 [SYS_read]    sys_read,
 [SYS_kill]    sys_kill,
@@ -132,9 +129,8 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
-[SYS_changepriority] sys_changepriority, //LAB 2 MODIFIED
-[SYS_getpriority] sys_getpriority, //LAB 2 MODIFIED
-[SYS_yield] sys_yield //LAB 2 MODIFIED
+[SYS_shm_open] sys_shm_open,
+[SYS_shm_close] sys_shm_close
 };
 
 void
